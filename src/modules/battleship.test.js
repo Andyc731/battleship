@@ -1,5 +1,6 @@
 import {describe, expect, test} from '@jest/globals';
 import { Ship, Gameboard, Player } from './battleship';
+import game from './game';
 
 test('Ship', () => {
     const ship = Ship(4, 'ship1');
@@ -119,7 +120,7 @@ test('Gameboard how many ships alive', () => {
     expect(gameboard.shipsAlive).toBe(1);
 })
 
-test('aiRandom returns proper indexes', () => {
+test('randomCoord returns proper indexes', () => {
     const ship = Ship(3)
     const player = Player('1');
     const computer = Player();
@@ -127,10 +128,10 @@ test('aiRandom returns proper indexes', () => {
 
     // jest.spyOn(Math, 'random').mockReturnValue(0.5);
     
-    expect(computer.aiRandom(player.playerBoard)).toEqual({x: 5, y: 5});
+    expect(computer.randomCoord(player.playerBoard)).toEqual({x: 5, y: 5});
 })
 
-test('aiRandom returns proper indexes', () => {
+test('randomCoord returns proper indexes', () => {
     const ship = Ship(3)
     const player = Player('1');
     const computer = Player();
@@ -141,7 +142,7 @@ test('aiRandom returns proper indexes', () => {
 
     // jest.spyOn(Math, 'random').mockReturnValue(0.5);
     
-    expect(computer.aiRandom(player.playerBoard)).toEqual({x: 5, y: 5});
+    expect(computer.randomCoord(player.playerBoard)).toEqual({x: 5, y: 5});
 })
 
 test('check if played all cells', () => {
@@ -162,4 +163,34 @@ test('check if played all cells', () => {
     gameboard.receiveAttack(3, 4);
 
     expect(gameboard.playAvailable()).toBe(true);
+})
+
+test('check which players turn', () => {
+    const player = Player('1');
+    const computer = Player();
+
+    player.attack(computer.playerBoard, 4, 3);
+    game();
+})
+
+test('check if slot is empty', () => {
+    const player = Player('1');
+    const ship = Ship(3)
+
+    player.playerBoard.placeShip(3, 4, 'vertical', ship);
+
+    expect(player.playerBoard.checkEmpty(3, 4, 'vertical', ship)).toBe(false);
+
+
+})
+
+test('check if slot is empty', () => {
+    const player = Player('1');
+    const ship = Ship(3)
+
+    player.playerBoard.placeShip(3, 4, 'vertical', ship);
+
+    expect(player.playerBoard.checkEmpty(4, 4, 'vertical', ship)).toBe(true);
+
+
 })

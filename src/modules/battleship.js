@@ -63,6 +63,20 @@ function Gameboard() {
                 }
             }
             return false;
+        },
+
+        checkEmpty: function(x, y, alignment, ship) {
+            if (alignment === 'horizontal') {
+                for (let i = 0; i < ship.length; i++) {
+                    if (this.board[y][x + i]) return false;
+                }
+            } else {
+                for (let i = 0; i < ship.length; i++) {
+                    if (this.board[y + i][x]) return false;
+                }
+            }
+
+            return true;
         }
     }
 }
@@ -77,7 +91,7 @@ function Player(player = 'computer') {
             enemyBoard.receiveAttack(x, y);
         },
 
-        aiRandom: function(enemyBoard) {
+        randomCoord: function(enemyBoard) {
             if (!enemyBoard.playAvailable()) {
                 return;
             }
@@ -94,21 +108,5 @@ function Player(player = 'computer') {
         }
     }
 }
-
-// function gameDisplay() {
-//     const player = Player('1');
-//     const computer = Player('computer');
-
-//     const container = document.createElement('div');
-//     player.playerBoard.forEach(row => {
-//         row.forEach(cell => {
-//             const cellDiv = document.createElement('div');
-//             container.appendChild(cellDiv);
-//         })
-//     })
-// }
-
-// console.log('blah')
-// gameDisplay();
 
 export { Ship, Gameboard, Player }
