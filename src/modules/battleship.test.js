@@ -179,7 +179,7 @@ test('check if slot is empty', () => {
 
     player.playerBoard.placeShip(3, 4, 'vertical', ship);
 
-    expect(player.playerBoard.checkEmpty(3, 4, 'vertical', ship)).toBe(false);
+    expect(player.playerBoard.canPlace(3, 4, 'vertical', ship)).toBe(false);
 
 
 })
@@ -190,7 +190,7 @@ test('check if slot is empty', () => {
 
     player.playerBoard.placeShip(3, 4, 'vertical', ship);
 
-    expect(player.playerBoard.checkEmpty(4, 4, 'vertical', ship)).toBe(true);
+    expect(player.playerBoard.canPlace(4, 4, 'vertical', ship)).toBe(true);
 
 
 })
