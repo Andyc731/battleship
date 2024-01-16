@@ -65,18 +65,38 @@ function Gameboard() {
             return false;
         },
 
-        checkEmpty: function(x, y, alignment, ship) {
+        canPlace: function(x, y, alignment, ship) {
+            console.log(x, y, alignment, ship)
+            const BOARDLENGTH = 10;
+
             if (alignment === 'horizontal') {
+                if (x + ship.length > BOARDLENGTH - 1) return false;
                 for (let i = 0; i < ship.length; i++) {
                     if (this.board[y][x + i]) return false;
                 }
             } else {
+                if (y + ship.length > BOARDLENGTH - 1) return false;
+
                 for (let i = 0; i < ship.length; i++) {
                     if (this.board[y + i][x]) return false;
                 }
             }
 
             return true;
+        },
+
+        randomPlace: function(ship) {
+            const BOARDLENGTH = 10;
+            let x, y;
+
+            const alignment = Math.floor(Math.random() * 2) ? 'horizontal' : 'vertical';
+
+            do {
+                x = Math.floor(Math.random() * BOARDLENGTH);
+                y = Math.floor(Math.random() * BOARDLENGTH);
+            } while (!this.canPlace(x, y, alignment, ship));
+
+            this.placeShip(x, y, alignment, ship);
         }
     }
 }
