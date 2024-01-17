@@ -66,7 +66,6 @@ function Gameboard() {
         },
 
         canPlace: function(x, y, alignment, ship) {
-            console.log(x, y, alignment, ship)
             const BOARDLENGTH = 10;
 
             if (alignment === 'horizontal') {
