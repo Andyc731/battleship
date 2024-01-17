@@ -6,11 +6,7 @@ gameDisplay();
 function gameDisplay() {
     const player = Player('1');
     const computer = Player('computer');
-    player.playerBoard.randomPlace(Ship(5));
-    player.playerBoard.randomPlace(Ship(4));
-    player.playerBoard.randomPlace(Ship(3));
-    player.playerBoard.randomPlace(Ship(3));
-    player.playerBoard.randomPlace(Ship(2));
+
     computer.playerBoard.randomPlace(Ship(5));
     computer.playerBoard.randomPlace(Ship(4));
     computer.playerBoard.randomPlace(Ship(3));
