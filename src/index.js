@@ -1,5 +1,5 @@
 import { Ship, Gameboard, Player } from './modules/battleship';
-import game from './modules/game';
+// import gameLoop from './modules/game';
 
 gameDisplay();
 // game();
@@ -17,47 +17,101 @@ function gameDisplay() {
     computer.playerBoard.randomPlace(Ship(3));
     computer.playerBoard.randomPlace(Ship(3));
     computer.playerBoard.randomPlace(Ship(2));
+
+    const BOARDLENGTH = 10;
     const playerContainer = document.querySelector('.container.player');
 
-    let playerTurn = true;
-    player.playerBoard.board.forEach(row => {
-        row.forEach(cell => {
+    for (let i = 0; i < BOARDLENGTH; i++) {
+        for (let j = 0; j < BOARDLENGTH; j++) {
             const cellDiv = document.createElement('div');
-            if (cell) {
-                cellDiv.classList.add('ship');
-
-            }
             cellDiv.classList.add('cell');
+
+            cellDiv.dataset.x = j;
+            cellDiv.dataset.y = i;
+
+            if (player.playerBoard.board[i][j]) {
+                cellDiv.classList.add('ship');
+            }
             playerContainer.appendChild(cellDiv);
-        })
-    })
+        }
+    }
 
     const computerContainer = document.querySelector('.container.computer');
-    let i = 0
-    computer.playerBoard.board.forEach(row => {
-        let j = 0;
-        row.forEach(cell => {
+    for (let i = 0; i < BOARDLENGTH; i++) {
+        for (let j = 0; j < BOARDLENGTH; j++) {
             const cellDiv = document.createElement('div');
-            cellDiv.classList.add('cell', `x${j}`, `y${i}`);
-            if (cell) {
+            cellDiv.classList.add('cell');
+
+            cellDiv.dataset.x = j;
+            cellDiv.dataset.y = i;
+
+            if (computer.playerBoard.board[i][j]) {
                 cellDiv.classList.add('ship');
             }
-            cellEventListener(cellDiv, player, computer);
-
+            // cellEventListener(cellDiv, player, computer);
             computerContainer.appendChild(cellDiv);
-            j++
-        })
-        i++;
+        }
+    }
+    
+    gameLoop(player, computer);
+    
+}
+
+async function gameLoop(player, computer) {
+    let turnToggle = true;
+    while (!player.playerBoard.allShipsSunk() && !computer.playerBoard.allShipsSunk()) {
+        if (turnToggle) {
+            const attackCoord = await playerTurn();
+            if (!computer.playerBoard.playedBoard[attackCoord.y][attackCoord.x]) {
+                player.attack(computer.playerBoard, attackCoord.x, attackCoord.y);
+                turnToggle = !turnToggle;
+            }
+        } else {
+            const coordinates = computer.randomCoord(player.playerBoard);
+            computer.attack(player.playerBoard, coordinates.x, coordinates.y)
+            turnToggle = !turnToggle;
+        }
+        displayBoards(player, computer);
+    }
+}
+
+function playerTurn() {
+    return new Promise(resolve=> {
+        const computerCells = document.querySelectorAll('.container.computer .cell');
+
+        function playerMoveHandler(event) {
+            
+            const clickedCell = event.target;
+            const xInput = Number(clickedCell.dataset.x);
+            const yInput = Number(clickedCell.dataset.y);
+
+            computerCells.forEach(cellDiv => {
+                cellDiv.removeEventListener('click', playerMoveHandler);
+            });
+
+            resolve({ x: xInput, y: yInput });
+        }
+
+        computerCells.forEach(cellDiv => {
+            cellDiv.addEventListener('click', playerMoveHandler);
+        });
     })
 }
 
-function cellEventListener(cellDiv, player, enemy) {
-    cellDiv.addEventListener('click', () => {
-        if (!cellDiv.classList.contains('played')) {
-            cellDiv.classList.add('played')
-            const xInput = Number(cellDiv.classList.item(1).slice(-1))
-            const yInput = Number(cellDiv.classList.item(2).slice(-1))
-            player.attack(enemy.playerBoard, xInput, yInput);
-        };
-    })
+function displayBoards(player, computer) {
+    const BOARDLENGTH = 10;
+    for (let i = 0; i < BOARDLENGTH; i++) {
+        for (let j = 0; j < BOARDLENGTH; j++) {
+            if (computer.playerBoard.playedBoard[i][j]) {
+                const cellDiv = document.querySelector(`.computer [data-x="${j}"][data-y="${i}"]`);
+                cellDiv.classList.add('played');
+                
+            }
+            if (player.playerBoard.playedBoard[i][j]) {
+                const cellDiv = document.querySelector(`.player [data-x="${j}"][data-y="${i}"]`);
+                cellDiv.classList.add('played');
+                
+            }
+        }
+    }
 }
