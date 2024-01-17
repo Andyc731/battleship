@@ -69,12 +69,12 @@ function Gameboard() {
             const BOARDLENGTH = 10;
 
             if (alignment === 'horizontal') {
-                if (x + ship.length > BOARDLENGTH - 1) return false;
+                if (x + ship.length - 1 > BOARDLENGTH - 1) return false;
                 for (let i = 0; i < ship.length; i++) {
                     if (this.board[y][x + i]) return false;
                 }
             } else {
-                if (y + ship.length > BOARDLENGTH - 1) return false;
+                if (y + ship.length - 1 > BOARDLENGTH - 1) return false;
 
                 for (let i = 0; i < ship.length; i++) {
                     if (this.board[y + i][x]) return false;
