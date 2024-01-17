@@ -20,6 +20,11 @@
     background-color: yellow;
 }
 
-.computer .cell.played.ship {
+.cell.played.ship {
     background-color: red;
+}
+
+.cell.played {
+    background-color: yellow;
+
 }
