@@ -11,3 +11,15 @@
 .ship {
     background-color: blue;
 }
+
+.computer .cell:hover  {
+    background-color: grey;
+}
+
+.computer .cell.played {
+    background-color: yellow;
+}
+
+.computer .cell.played.ship {
+    background-color: red;
+}

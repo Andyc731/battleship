@@ -38,14 +38,17 @@ function gameDisplay() {
             const cellDiv = document.createElement('div');
             if (cell) {
                 cellDiv.classList.add('ship');
-
             }
             cellDiv.classList.add('cell');
+            cellEventListener(cellDiv);
 
             computerContainer.appendChild(cellDiv);
         })
     })
 }
 
-
-
+function cellEventListener(cellDiv) {
+    cellDiv.addEventListener('click', () => {
+        if (!cellDiv.classList.contains('played')) cellDiv.classList.add('played');
+    })
+}
