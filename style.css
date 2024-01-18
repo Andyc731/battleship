@@ -1,0 +1,52 @@
+.cell {
+    border: solid black 1px;
+}
+
+.container {
+    display: grid;
+    grid-template: repeat(10, 50px) / repeat(10, 50px);
+    margin: 10px;
+}
+
+.player .ship {
+    background-color: blue;
+}
+
+.computer .cell:hover  {
+    background-color: grey;
+}
+
+.computer .cell.played {
+    background-color: yellow;
+}
+
+.cell.played.ship {
+    background-color: red;
+}
+
+.cell.played {
+    background-color: yellow;
+
+}
+
+#alignment-button {
+    height: 30px;
+    grid-column: 1 / 3;
+}
+
+.cell.place {
+    background-color: aqua;
+}
+
+.main-cont {
+    display: grid;
+    grid-template: 30px 1fr / 1fr 1fr;
+    justify-items: center;
+    gap: 100px;
+}
+
+.left-cont,
+.right-cont {
+    display: grid;
+    justify-items: center;
+}
