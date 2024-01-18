@@ -11,7 +11,68 @@ async function gameLoop(player, computer) {
         console.log(alignment);
     })
 
+    // const playerCells = document.querySelectorAll('.container.player .cell');
+    // playerCells.forEach(cellDiv => {
+    //     cellDiv.addEventListener('mouseover', () => {
+    //         for (let i = 0; i < )
+    //         cellDiv.classList.add('place');
+    //         console.log(cellDiv.dataset.x);
+    //     })
+
+    //     cellDiv.addEventListener('mouseout', () => {
+    //         cellDiv.classList.remove('place');
+
+    //     })
+    // })
+    // console.log(playerCells);
+
     const shipSizes = [2, 3, 3, 4, 5]
+    const playerBoardContainer = document.querySelector('.container.player');
+
+    function handleCellHover(event) {
+        const cellDiv = event.target;
+    
+        if (cellDiv.classList.contains('cell')) {
+            const shipSize = shipSizes[player.playerBoard.shipsAlive];
+            for (let i = 0; i < shipSize; i++) {
+                if (player.playerBoard.canPlace(Number(cellDiv.dataset.x), Number(cellDiv.dataset.y), alignment, Ship(shipSize))) {
+                    if (alignment === 'horizontal') {
+                        const cell = document.querySelector(`.container.player [data-x="${Number(cellDiv.dataset.x) + i}"][data-y="${cellDiv.dataset.y}"]`)
+                        cell.classList.add('place');
+                    } else {
+                        const cell = document.querySelector(`.container.player [data-x="${Number(cellDiv.dataset.x)}"][data-y="${Number(cellDiv.dataset.y) + i}"]`)
+                        cell.classList.add('place');
+                    }
+                    // console.log(Number(cellDiv.dataset.x) + i);
+                }
+            }
+            // console.log(`Ship size: ${shipSize}`, cellDiv);
+        }
+    }
+    
+    function handleCellLeave(event) {
+        const cellDiv = event.target;
+    
+        if (cellDiv.classList.contains('cell')) {
+            const shipSize = shipSizes[player.playerBoard.shipsAlive];
+
+            for (let i = 0; i < shipSize; i++) {
+                if (player.playerBoard.canPlace(Number(cellDiv.dataset.x), Number(cellDiv.dataset.y), alignment, Ship(shipSize))) {
+                    if (alignment === 'horizontal') {
+                        const cell = document.querySelector(`.container.player [data-x="${Number(cellDiv.dataset.x) + i}"][data-y="${cellDiv.dataset.y}"]`)
+                        cell.classList.remove('place');
+                    } else {
+                        const cell = document.querySelector(`.container.player [data-x="${Number(cellDiv.dataset.x)}"][data-y="${Number(cellDiv.dataset.y) + i}"]`)
+                        cell.classList.remove('place');
+                    }
+                }
+            }
+        }
+    }
+    
+    playerBoardContainer.addEventListener('mouseover', handleCellHover);
+    playerBoardContainer.addEventListener('mouseout', handleCellLeave);
+
     while (player.playerBoard.shipsAlive < shipSizes.length) {
         const shipSize = shipSizes[player.playerBoard.shipsAlive];
 
